@@ -1,24 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ChakraProvider, Box } from '@chakra-ui/react';
+import HomePage from './Pages/HomePage';
+import CoinPage from './Pages/CoinPage';
+import LoginPage from './Pages/LoginPage'; // Import the LoginPage
+import AppBar from './Components/AppBar';
+import CryptoContext from './CryptoContext';
+import WalletPage from './Pages/WalletPage'; // Import WalletPage
+import ProfilePage from './Pages/ProfilePage'; // Import ProfilePage
+import WatchlistPage from './Pages/WatchlistPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <CryptoContext>
+        <Router>
+          <Box bg="#14161a" color="white" minH="100vh">
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route 
+                path="/home" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for HomePage */}
+                    <HomePage />
+                  </>
+                } 
+              />
+              <Route 
+                path="/coins/:id" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for CoinPage */}
+                    <CoinPage />
+                  </>
+                } 
+              />
+              <Route 
+                path="/wallet" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for WalletPage */}
+                    <WalletPage />
+                  </>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <ProfilePage />
+                  </>
+                } 
+              />
+              <Route 
+                path="/watchlist" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <WatchlistPage />
+                  </>
+                } 
+              />
+            </Routes>
+          </Box>
+        </Router>
+      </CryptoContext>
+    </ChakraProvider>
   );
 }
 
