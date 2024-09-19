@@ -11,7 +11,7 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 // API URL for trending coins
-const TrendingCoins = (currency) => 
+const TrendingCoins = (currency) =>
   `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=10&page=1&sparkline=false`;
 
 // Helper function to format numbers with commas
@@ -54,29 +54,28 @@ const Carousel = () => {
           textTransform="uppercase"
           color="white"
           p={4}
-          w="120px" // Adjust the width for better fit
+          bgColor="transparent"
         >
           <Image
             src={coin?.image}
             alt={coin.name}
-            boxSize="50px"  // Adjust size of coin image
+            boxSize="100px"  // Adjust size of coin image
             mb={2}
+            marginBottom={4}
           />
-          <Text fontSize="md" fontWeight="bold">
-            {coin?.symbol.toUpperCase()}
-            &nbsp;
-            <Text
-              as="span"
-              color={profit ? 'green.400' : 'red.400'}
-              fontWeight="bold"
-            >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Text fontSize="lg" fontWeight="bold" mb={1}> {/* Increased font size and added margin-bottom */}
+              {coin?.symbol.toUpperCase()}
+            </Text>
+            <Text as="span" color={profit ? 'green.400' : 'red.400'} fontWeight="bold" fontSize="md" mb={2}> {/* Adjusted font size and margin-bottom */}
               {profit && "+"}
               {coin?.price_change_percentage_24h?.toFixed(2)}%
             </Text>
-          </Text>
-          <Text fontSize="lg" fontWeight="bold">
-            ${numberWithCommas(coin?.current_price.toFixed(2))}
-          </Text>
+            <Text fontSize="m" fontWeight="bold"> {/* Increased font size for price */}
+              ${numberWithCommas(coin?.current_price.toFixed(2))}
+            </Text>
+          </Box>
+
         </Box>
       </Link>
     );
@@ -89,15 +88,22 @@ const Carousel = () => {
     512: {
       items: 3, // Show 3 items for medium and larger screens
     },
+    1024: {
+      items: 5,
+    }
   };
 
   return (
     <Box
+      backgroundImage="url(./banner.jpg)"
+      backgroundSize="cover" // or "contain"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      bgColor="transparent"
       display="flex"
       flexDirection="row"
       alignItems="center"
       justifyContent="center"
-      bg={colors.gray[800]}
       p={4}
       width="100%"
       height="400px"
@@ -112,6 +118,7 @@ const Carousel = () => {
         responsive={responsive}
         items={items}
         autoPlay
+        bgColor="transparent"
       />
     </Box>
   );

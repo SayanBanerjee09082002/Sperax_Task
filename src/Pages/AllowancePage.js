@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Container, CircularProgress, useToast, Heading } from '@chakra-ui/react';
+import { Text, Table, Thead, Tbody, Tr, Th, Td, Container, Spinner, useToast, Heading, Flex } from '@chakra-ui/react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../Firebase'; // Assuming firebase is configured in firebase.js
 
@@ -139,7 +139,9 @@ const Allowance = () => {
 
             {error && <Text color="red.500" mt={4}>{error}</Text>}
 
-            {isLoading && <CircularProgress isIndeterminate color="teal" mt={4} />}
+            {isLoading && <Flex justifyContent="center" alignItems="center">
+                <Spinner size="xl" color="gold" />
+            </Flex>}
 
             {allowanceData.length > 0 && !isLoading && (
                 <Table variant="simple" mt={4}>
