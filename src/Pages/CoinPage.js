@@ -115,7 +115,9 @@ const CoinPage = () => {
     }
   };
 
-  if (!coin) return <Spinner size="xl" color="gold" />;
+  if (!coin) return <Flex justifyContent="center" alignItems="center" height="100vh">
+    <Spinner size="xl" color="gold" />
+  </Flex>;
 
   return (
     <Flex

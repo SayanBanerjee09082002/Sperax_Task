@@ -107,6 +107,8 @@ export default function TransferForm() {
             color="black"
             _hover={{ bg: "yellow.400" }}
             width="full"
+            marginTop={4}
+            marginBottom={2}
           >
             Pay Now
           </Button>

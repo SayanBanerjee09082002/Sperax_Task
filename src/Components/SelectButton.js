@@ -16,7 +16,11 @@ const SelectButton = ({ children, selected, onClick }) => {
         bg: "gold",
         color: "black",
       }}
-      width="22%"
+      whiteSpace="nowrap"  // Prevent text from wrapping
+      width="fit-content"  // Let the button adjust to content width
+      maxWidth="100%"      // Ensure the button doesn’t overflow its container
+      overflow="hidden"    // Hide overflow in case of too much text
+      textOverflow="ellipsis" // Add ellipsis if text is too long
     >
       {children}
     </Button>

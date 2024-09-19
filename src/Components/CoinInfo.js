@@ -2,29 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { HistoricalChart } from "../config/api";
 import { Line } from "react-chartjs-2";
-import { Box, CircularProgress, Flex, Text } from "@chakra-ui/react";
+import { Box, Spinner, Flex } from "@chakra-ui/react";
 import SelectButton from "./SelectButton";
 import { chartDays } from "../config/data";
 import { CryptoState } from "../CryptoContext";
 import {
-    Chart as ChartJS,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    Title,
-    Tooltip,
-    Legend,
-    PointElement,
-  } from 'chart.js';
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+} from 'chart.js';
 
 ChartJS.register(
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    Title,
-    Tooltip,
-    Legend,
-    PointElement
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement
 );
 
 const CoinInfo = ({ coin }) => {
@@ -47,7 +47,9 @@ const CoinInfo = ({ coin }) => {
   return (
     <Box p={4} borderWidth={1} borderRadius="md" borderColor="transparent" bg="transparent" color="white">
       {!historicData || !flag ? (
-        <CircularProgress isIndeterminate color="gold" size="250px" thickness={1} />
+        <Flex justifyContent="center" alignItems="center" height="100vh">
+          <Spinner size="xl" color="gold" />
+        </Flex>
       ) : (
         <>
           <Box mb={4}>

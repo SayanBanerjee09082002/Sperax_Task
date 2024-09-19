@@ -23,12 +23,14 @@ import { useNavigate } from 'react-router-dom';
 import { CoinList } from '../config/api.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '../Firebase'; // Ensure correct Firebase path
+import ErrorMessage from './ErrorMessage'; // Import the ErrorMessage component
 
 const WatchlistTable = () => {
   const [coins, setCoins] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState(''); // State to store error messages
   const navigate = useNavigate();
 
   const paddingX = useBreakpointValue({ base: 2, sm: 4, md: 8, lg: 0 });
@@ -37,7 +39,7 @@ const WatchlistTable = () => {
   // Fetch the watchlist from Firestore
   const fetchWatchlist = async () => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) return; // Ensure the user is logged in
 
     try {
       const q = query(collection(db, 'wallets'), where('userId', '==', user.uid));
@@ -47,6 +49,8 @@ const WatchlistTable = () => {
         const doc = querySnapshot.docs[0]; // Assuming one document per user
         const data = doc.data();
         setWatchlist(data.watchList || []);
+      } else {
+        console.warn('No watchlist found for this user.');
       }
     } catch (error) {
       console.error('Error fetching watchlist:', error);
@@ -56,11 +60,18 @@ const WatchlistTable = () => {
   // Fetch all coins
   const fetchCoins = async () => {
     setLoading(true);
+    setError(''); // Clear previous errors
+
     try {
       const { data } = await axios.get(CoinList('usd'));
       setCoins(data);
     } catch (error) {
       console.error('Error fetching coins:', error);
+      // Use error.response if available, or error.message as a fallback
+      setError(
+        error.response?.data?.status?.error_message || 
+        'An error occurred while fetching coins. (Iam using free version of the API, please try again after some time.)'
+      );
     } finally {
       setLoading(false);
     }
@@ -75,7 +86,7 @@ const WatchlistTable = () => {
     navigate(`/coins/${coinId}`);
   };
 
-  // Filter coins based on the user's watchlist
+  // Filter coins based on the user's watchlist and search term
   const filteredCoins = useMemo(() => {
     return coins.filter(
       (coin) =>
@@ -100,8 +111,13 @@ const WatchlistTable = () => {
           height="60px"
         />
 
+        {/* Display error message if there's an error */}
+        {error && <ErrorMessage message={error} />}
+
         {loading ? (
-          <Spinner size="xl" />
+          <Flex justifyContent="center" alignItems="center">
+            <Spinner size="xl" color="gold" />
+          </Flex>
         ) : (
           <Box w="100%" overflowX="auto">
             <Box borderRadius="md" overflow="hidden">
@@ -130,7 +146,7 @@ const WatchlistTable = () => {
                         onClick={() => handleRowClick(coin.id)}
                         cursor="pointer"
                         borderBottom="2px solid #555555"
-                        _hover={{ backgroundColor: "#1c1e22", cursor: "pointer" }} 
+                        _hover={{ backgroundColor: "#1c1e22", cursor: "pointer" }}
                       >
                         <Td>
                           <Flex align="center">
@@ -159,7 +175,9 @@ const WatchlistTable = () => {
                               : 'red.400'
                           }
                         >
-                          {coin.price_change_percentage_24h.toFixed(2)}%
+                          {coin.price_change_percentage_24h
+                            ? `${coin.price_change_percentage_24h.toFixed(2)}%`
+                            : 'N/A'}
                         </Td>
                         <Td>${coin.market_cap.toLocaleString()}</Td>
                       </Tr>

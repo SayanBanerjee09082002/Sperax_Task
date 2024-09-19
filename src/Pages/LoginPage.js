@@ -61,6 +61,7 @@ const LoginPage = () => {
           leftIcon={<Image src="./google.png" boxSize="40px" />} 
           onClick={handleLogin}
           pl={3} // Adjust padding as needed
+          marginTop={24}
         >
           Sign in with Google
         </Button>

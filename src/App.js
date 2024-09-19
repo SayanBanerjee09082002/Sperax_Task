@@ -9,6 +9,7 @@ import CryptoContext from './CryptoContext';
 import WalletPage from './Pages/WalletPage'; // Import WalletPage
 import ProfilePage from './Pages/ProfilePage'; // Import ProfilePage
 import WatchlistPage from './Pages/WatchlistPage';
+import Allowance from './Pages/AllowancePage';
 
 function App() {
   return (
@@ -60,6 +61,15 @@ function App() {
                   <>
                     <AppBar /> {/* Render AppBar for ProfilePage */}
                     <WatchlistPage />
+                  </>
+                } 
+              />
+              <Route 
+                path="/allowance" 
+                element={
+                  <>
+                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <Allowance />
                   </>
                 } 
               />

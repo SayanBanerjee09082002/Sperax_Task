@@ -17,15 +17,17 @@ import {
   useBreakpointValue,
   Flex,
   Image,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CoinList } from '../config/api.js';
+import ErrorMessage from './ErrorMessage'; // Import the ErrorMessage component
 
 const CoinsTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState(''); // State to store error messages
   const navigate = useNavigate();
 
   const paddingX = useBreakpointValue({ base: 2, sm: 4, md: 8, lg: 0 });
@@ -33,11 +35,18 @@ const CoinsTable = () => {
 
   const fetchCoins = async () => {
     setLoading(true);
+    setError(''); // Reset error message before fetching
+
     try {
       const { data } = await axios.get(CoinList('usd'));
       setCoins(data);
     } catch (error) {
       console.error('Error fetching coins:', error);
+      // Set error message depending on where it exists
+      setError(
+        error.response?.data?.status?.error_message || 
+        'An error occurred while fetching coins. (Iam using free version of the API, please try again after some time.)'
+      );
     } finally {
       setLoading(false);
     }
@@ -74,8 +83,13 @@ const CoinsTable = () => {
           height="60px"
         />
 
+        {/* Display error message if there's an error */}
+        {error && <ErrorMessage message={error} />}
+
         {loading ? (
-          <Spinner size="xl" />
+          <Flex justifyContent="center" alignItems="center">
+            <Spinner size="xl" color="gold" />
+          </Flex>
         ) : (
           <Box w="100%" overflowX="auto">
             <Box borderRadius="md" overflow="hidden">
@@ -104,7 +118,7 @@ const CoinsTable = () => {
                         onClick={() => handleRowClick(coin.id)}
                         cursor="pointer"
                         borderBottom="2px solid #555555"
-                        _hover={{ backgroundColor: "#1c1e22", cursor: "pointer" }} 
+                        _hover={{ backgroundColor: "#1c1e22", cursor: "pointer" }}
                       >
                         <Td>
                           <Flex align="center">
@@ -133,7 +147,9 @@ const CoinsTable = () => {
                               : 'red.400'
                           }
                         >
-                          {coin.price_change_percentage_24h.toFixed(2)}%
+                          {coin.price_change_percentage_24h
+                            ? `${coin.price_change_percentage_24h.toFixed(2)}%`
+                            : 'N/A'}
                         </Td>
                         <Td>${coin.market_cap.toLocaleString()}</Td>
                       </Tr>
