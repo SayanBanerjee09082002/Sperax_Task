@@ -14,9 +14,9 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import { getAuth } from 'firebase/auth';
-import { app, db } from '../Firebase';
+import { app, db } from '../Config/Firebase';
 import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
-import { EditIcon } from '@chakra-ui/icons'; 
+import { EditIcon } from '@chakra-ui/icons';
 import TransferForm from '../Components/TransferForm';
 
 const ProfilePage = () => {
@@ -33,28 +33,22 @@ const ProfilePage = () => {
 
       if (currentUser) {
         setUser(currentUser);
-
-        const fetchWalletData = async (userId) => {
-          try {
-            const walletQuery = query(collection(db, 'wallets'), where('userId', '==', userId));
-            const querySnapshot = await getDocs(walletQuery);
-
-            if (querySnapshot.empty) {
-              console.error('No wallet address found');
-              return '';
-            }
-
-            const walletDoc = querySnapshot.docs[0];
-            const walletData = walletDoc.data();
-            return walletData.address || '';
-          } catch (error) {
-            console.error('Error fetching wallet address:', error);
-            return '';
-          }
-        };
-
         const walletAddress = await fetchWalletData(currentUser.uid);
         setWallet(walletAddress || '');
+      }
+    };
+
+    const fetchWalletData = async (userId) => {
+      try {
+        const walletQuery = query(collection(db, 'wallets'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(walletQuery);
+        if (querySnapshot.empty) return '';
+        const walletDoc = querySnapshot.docs[0];
+        const walletData = walletDoc.data();
+        return walletData.address || '';
+      } catch (error) {
+        console.error('Error fetching wallet address:', error);
+        return '';
       }
     };
 
@@ -104,11 +98,7 @@ const ProfilePage = () => {
 
   return (
     <Flex direction="column" p={paddingX} align="center" maxW="container.sm" mx="auto">
-      <Box
-        p={4}
-        mb={4}
-        textAlign="center"
-      >
+      <Box p={4} mb={4} textAlign="center">
         <Image
           src={user?.photoURL || '/default-profile.png'}
           alt="Profile"
@@ -123,11 +113,7 @@ const ProfilePage = () => {
         <Text mb={2}>{user?.email}</Text>
       </Box>
 
-      <Box
-        p={4}
-        textAlign="center"
-        w="full"
-      >
+      <Box p={4} textAlign="center" w="full">
         <Flex align="center" mb={4}>
           <FormControl>
             <FormLabel htmlFor="walletAddress" fontSize="lg" mb={0}>

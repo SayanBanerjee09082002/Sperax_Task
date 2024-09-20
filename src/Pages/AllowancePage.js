@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Text, Table, Thead, Tbody, Tr, Th, Td, Container, Spinner, useToast, Heading, Flex } from '@chakra-ui/react';
+import {
+    Text,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    Container,
+    Spinner,
+    useToast,
+    Heading,
+    Flex
+} from '@chakra-ui/react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db, auth } from '../Firebase'; // Assuming firebase is configured in firebase.js
+import { db, auth } from '../Config/Firebase';
 
 const ethers = require('ethers');
 
 const ETHERSCAN_API_URL = 'https://api.etherscan.io/api';
-const API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY; // Add this to your .env file
+const API_KEY = process.env.REACT_APP_ETHERSCAN_API_KEY;
 
 const Allowance = () => {
     const [walletAddress, setWalletAddress] = useState('');
@@ -93,11 +106,9 @@ const Allowance = () => {
                 },
             });
 
-            // Check if the response contains a result
             if (response.data && Array.isArray(response.data.result)) {
                 const transactions = response.data.result;
 
-                // Find unique contract addresses from the transactions
                 const uniqueContracts = transactions.reduce((acc, tx) => {
                     if (!acc.some((contract) => contract.contractAddress === tx.contractAddress)) {
                         acc.push({ contractAddress: tx.contractAddress });
@@ -116,7 +127,6 @@ const Allowance = () => {
         }
     };
 
-
     const fetchAllowance = async (walletAddress, contractAddress) => {
         const response = await axios.get(ETHERSCAN_API_URL, {
             params: {
@@ -124,13 +134,13 @@ const Allowance = () => {
                 action: 'tokenallowance',
                 contractaddress: contractAddress,
                 address: walletAddress,
-                spender: walletAddress, // Assuming self-check (wallet as spender)
+                spender: walletAddress,
                 apikey: API_KEY,
             },
         });
 
         const allowance = response.data.result;
-        return ethers.utils.formatUnits(allowance, 18); // Assume token has 18 decimals
+        return ethers.utils.formatUnits(allowance, 18);
     };
 
     return (

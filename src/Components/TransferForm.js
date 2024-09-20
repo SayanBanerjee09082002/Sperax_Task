@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Button, Flex, FormControl, FormLabel, Input, useToast } from '@chakra-ui/react';
 import ErrorMessage from './ErrorMessage';
 import TxList from './TxList';
-
 const ethers = require("ethers");
 
 const startPayment = async ({ setError, setTxs, ether, addr }) => {
@@ -13,20 +12,14 @@ const startPayment = async ({ setError, setTxs, ether, addr }) => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    // Validate the address
     const validatedAddr = ethers.getAddress(addr);
 
-    console.log("this",signer);
-    
     const tx = await signer.sendTransaction({
       to: validatedAddr,
       value: ethers.parseEther(ether),
     });
 
     const receipt = await tx.wait();
-
-    console.log({ ether, addr });
-    console.log('tx', receipt);
     setTxs([receipt]);
   } catch (err) {
     setError(err.message);
@@ -43,12 +36,7 @@ export default function TransferForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    await startPayment({
-      setError,
-      setTxs,
-      ether,
-      addr,
-    });
+    await startPayment({ setError, setTxs, ether, addr });
     if (!error) {
       toast({
         title: 'Transaction sent!',
@@ -61,15 +49,7 @@ export default function TransferForm() {
   };
 
   return (
-    <Box
-      borderWidth={1}
-      borderRadius="md"
-      p={4}
-      mb={4}
-      textAlign="center"
-      bg="gray.800"
-      w="full"
-    >
+    <Box borderWidth={1} borderRadius="md" p={4} mb={4} textAlign="center" bg="gray.800" w="full">
       <Flex direction="column" align="left">
         <Box mb={4} textAlign="left">
           <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>Send ETH Payment</h1>

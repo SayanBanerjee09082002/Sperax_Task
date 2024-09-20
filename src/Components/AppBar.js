@@ -17,16 +17,16 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, useLocation } from 'react-router-dom';
-import SelectButton from './SelectButton'; // Import your custom SelectButton
+import SelectButton from './SelectButton';
 
 const AppBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isDesktop = useBreakpointValue({ base: false, md: true });
-  const location = useLocation(); // Get the current location
-  const [selectedRoute, setSelectedRoute] = useState(location.pathname); // Set the initial selected route to the current path
+  const location = useLocation();
+  const [selectedRoute, setSelectedRoute] = useState(location.pathname);
 
   const handleSelect = (route) => {
-    setSelectedRoute(route); // Update the selected route when a button is clicked
+    setSelectedRoute(route);
   };
 
   return (
@@ -38,7 +38,6 @@ const AppBar = () => {
       boxShadow="0px 8px 16px rgba(0, 0, 0, 0.3)"
     >
       <Flex align="center" h={16} justify="space-between">
-        {/* Hamburger Icon */}
         {!isDesktop && (
           <IconButton
             icon={<HamburgerIcon />}
@@ -51,14 +50,12 @@ const AppBar = () => {
           />
         )}
 
-        {/* App Title */}
         <Heading size="lg" color="gold">
           Sperax Crypto Portfolio
         </Heading>
 
         <Spacer />
 
-        {/* Desktop Menu Items */}
         {isDesktop && (
           <Flex gap={4}>
             <Link to="/home" onClick={() => handleSelect('/home')}>
@@ -80,7 +77,6 @@ const AppBar = () => {
         )}
       </Flex>
 
-      {/* Mobile Drawer */}
       {!isDesktop && (
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />

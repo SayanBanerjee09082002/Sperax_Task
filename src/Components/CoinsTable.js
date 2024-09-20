@@ -20,14 +20,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { CoinList } from '../config/api.js';
-import ErrorMessage from './ErrorMessage'; // Import the ErrorMessage component
+import { CoinList } from '../Config/Api.js';
+import ErrorMessage from './ErrorMessage';
 
 const CoinsTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [error, setError] = useState(''); // State to store error messages
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const paddingX = useBreakpointValue({ base: 2, sm: 4, md: 8, lg: 0 });
@@ -35,17 +35,15 @@ const CoinsTable = () => {
 
   const fetchCoins = async () => {
     setLoading(true);
-    setError(''); // Reset error message before fetching
+    setError('');
 
     try {
       const { data } = await axios.get(CoinList('usd'));
       setCoins(data);
     } catch (error) {
-      console.error('Error fetching coins:', error);
-      // Set error message depending on where it exists
       setError(
-        error.response?.data?.status?.error_message || 
-        'An error occurred while fetching coins. (Iam using free version of the API, please try again after some time.)'
+        error.response?.data?.status?.error_message ||
+        'An error occurred while fetching coins. (I am using the free version of the API, please try again after some time.)'
       );
     } finally {
       setLoading(false);
@@ -83,7 +81,6 @@ const CoinsTable = () => {
           height="60px"
         />
 
-        {/* Display error message if there's an error */}
         {error && <ErrorMessage message={error} />}
 
         {loading ? (

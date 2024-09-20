@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { Box, Button, Input, Heading, Text, VStack, useToast } from '@chakra-ui/react';
-import { db } from '../Firebase'; // Import Firebase database
-import { collection, addDoc } from 'firebase/firestore'; // Import Firestore functions
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { auth } from '../Firebase';
+import { db, auth } from '../Config/Firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const WalletPage = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleWalletAddressChange = (e) => {
     setWalletAddress(e.target.value);
   };
 
   const validateWalletAddress = (address) => {
-    // Basic validation for wallet address (you might need more complex validation based on the wallet type)
-    return address.length === 42 && address.startsWith('0x'); // Example validation for Ethereum addresses
+    return address.length === 42 && address.startsWith('0x'); // Basic validation for Ethereum addresses
   };
 
   const handleSubmit = async (e) => {
@@ -32,10 +30,10 @@ const WalletPage = () => {
       });
       return;
     }
-    
+
     setLoading(true);
     try {
-      const user = auth.currentUser; // Get the current user directly from Firebase auth
+      const user = auth.currentUser;
       if (!user) {
         toast({
           title: "Authentication Error",
@@ -47,16 +45,15 @@ const WalletPage = () => {
         navigate('/'); // Redirect to login page
         return;
       }
-  
-      // Store the wallet address and userId in Firestore
+
       const walletRef = collection(db, 'wallets');
       await addDoc(walletRef, {
-        userId: user.uid, // Store the authenticated user's uid
+        userId: user.uid,
         address: walletAddress,
-        watchList: [], // Initialize with an empty watch list
+        watchList: [],
         createdAt: new Date()
       });
-  
+
       toast({
         title: "Wallet Added",
         description: "Your wallet address has been added successfully.",
@@ -64,7 +61,7 @@ const WalletPage = () => {
         duration: 5000,
         isClosable: true,
       });
-      navigate('/home'); // Redirect to homepage after successful addition
+      navigate('/home');
     } catch (error) {
       console.error("Error adding wallet address:", error);
       toast({
@@ -78,41 +75,40 @@ const WalletPage = () => {
       setLoading(false);
     }
   };
-  
 
   return (
-    <Box 
+    <Box
       bgImage="url(./banner.jpg)"
-      bgSize="cover" 
-      bgPosition="center" 
-      minH="100vh" 
-      display="flex" 
-      alignItems="center" 
+      bgSize="cover"
+      bgPosition="center"
+      minH="100vh"
+      display="flex"
+      alignItems="center"
       justifyContent="center"
       color="white"
       textAlign="center"
     >
       <VStack spacing={4}>
-        <Heading fontSize={64}> {/* Increased font size */}
+        <Heading fontSize={64}>
           Add Wallet
         </Heading>
         <Text fontSize={18}>
           Enter your wallet address to create a watch list and manage your tokens.
         </Text>
         <form onSubmit={handleSubmit}>
-          <Input 
-            placeholder="Enter Wallet Address" 
-            value={walletAddress} 
-            onChange={handleWalletAddressChange} 
+          <Input
+            placeholder="Enter Wallet Address"
+            value={walletAddress}
+            onChange={handleWalletAddressChange}
             mb={4}
-            color="white" // Make the input text white
-            _placeholder={{ color: "gray.400" }} // Make the placeholder text gray
-            bg="rgba(255, 255, 255, 0.1)" // Slightly transparent background for better visibility
+            color="white"
+            _placeholder={{ color: "gray.400" }}
+            bg="rgba(255, 255, 255, 0.1)"
           />
-          <Button 
-            colorScheme="yellow" 
-            bg="gold" 
-            color="black" 
+          <Button
+            colorScheme="yellow"
+            bg="gold"
+            color="black"
             size="lg"
             type="submit"
             isLoading={loading}

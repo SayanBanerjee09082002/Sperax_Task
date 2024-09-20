@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { HistoricalChart } from "../config/api";
+import { HistoricalChart } from "../Config/Api";
 import { Line } from "react-chartjs-2";
 import { Box, Spinner, Flex } from "@chakra-ui/react";
 import SelectButton from "./SelectButton";
-import { chartDays } from "../config/data";
-import { CryptoState } from "../CryptoContext";
+import { chartDays } from "../Config/Data";
+import { CryptoState } from "../Config/CryptoContext";
 import {
   Chart as ChartJS,
   LineElement,
@@ -30,7 +30,7 @@ ChartJS.register(
 const CoinInfo = ({ coin }) => {
   const [historicData, setHistoricData] = useState();
   const [days, setDays] = useState(1);
-  const { currency } = CryptoState(); // Use the custom hook
+  const { currency } = CryptoState();
   const [flag, setFlag] = useState(false);
 
   const fetchHistoricData = async () => {
@@ -41,8 +41,7 @@ const CoinInfo = ({ coin }) => {
 
   useEffect(() => {
     fetchHistoricData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [days, currency]); // Add currency to dependencies
+  }, [days, currency]);
 
   return (
     <Box p={4} borderWidth={1} borderRadius="md" borderColor="transparent" bg="transparent" color="white">

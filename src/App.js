@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ChakraProvider, Box } from '@chakra-ui/react';
 import HomePage from './Pages/HomePage';
 import CoinPage from './Pages/CoinPage';
-import LoginPage from './Pages/LoginPage'; // Import the LoginPage
+import LoginPage from './Pages/LoginPage';
 import AppBar from './Components/AppBar';
-import CryptoContext from './CryptoContext';
-import WalletPage from './Pages/WalletPage'; // Import WalletPage
-import ProfilePage from './Pages/ProfilePage'; // Import ProfilePage
+import CryptoContext from './Config/CryptoContext';
+import WalletPage from './Pages/WalletPage';
+import ProfilePage from './Pages/ProfilePage';
 import WatchlistPage from './Pages/WatchlistPage';
 import Allowance from './Pages/AllowancePage';
 
@@ -19,58 +19,54 @@ function App() {
           <Box bg="#14161a" color="white" minH="100vh">
             <Routes>
               <Route path="/" element={<LoginPage />} />
-              <Route 
-                path="/home" 
+              <Route
+                path="/home"
                 element={
                   <>
-                    <AppBar /> {/* Render AppBar for HomePage */}
+                    <AppBar />
                     <HomePage />
                   </>
-                } 
+                }
               />
-              <Route 
-                path="/coins/:id" 
+              <Route
+                path="/coins/:id"
                 element={
                   <>
-                    <AppBar /> {/* Render AppBar for CoinPage */}
+                    <AppBar />
                     <CoinPage />
                   </>
-                } 
+                }
               />
-              <Route 
-                path="/wallet" 
+              <Route
+                path="/wallet"
+                element={<WalletPage />}
+              />
+              <Route
+                path="/profile"
                 element={
                   <>
-                    <WalletPage />
-                  </>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <>
-                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <AppBar />
                     <ProfilePage />
                   </>
-                } 
+                }
               />
-              <Route 
-                path="/watchlist" 
+              <Route
+                path="/watchlist"
                 element={
                   <>
-                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <AppBar />
                     <WatchlistPage />
                   </>
-                } 
+                }
               />
-              <Route 
-                path="/allowance" 
+              <Route
+                path="/allowance"
                 element={
                   <>
-                    <AppBar /> {/* Render AppBar for ProfilePage */}
+                    <AppBar />
                     <Allowance />
                   </>
-                } 
+                }
               />
             </Routes>
           </Box>

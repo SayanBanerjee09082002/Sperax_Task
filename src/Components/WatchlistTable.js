@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState, useMemo } from 'react';
+import axios from 'axios';
 import {
   Input,
   Container,
@@ -14,63 +14,57 @@ import {
   TableContainer,
   Spinner,
   Box,
-  useBreakpointValue,
   Flex,
   Image,
-  Text
+  Text,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { CoinList } from '../config/api.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db, auth } from '../Firebase'; // Ensure correct Firebase path
-import ErrorMessage from './ErrorMessage'; // Import the ErrorMessage component
+import { db, auth } from '../Config/Firebase';
+import { CoinList } from '../Config/Api';
+import ErrorMessage from './ErrorMessage';
 
 const WatchlistTable = () => {
   const [coins, setCoins] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [error, setError] = useState(''); // State to store error messages
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const paddingX = useBreakpointValue({ base: 2, sm: 4, md: 8, lg: 0 });
   const marginY = useBreakpointValue({ base: 2, md: 4, lg: 4 });
 
-  // Fetch the watchlist from Firestore
   const fetchWatchlist = async () => {
     const user = auth.currentUser;
-    if (!user) return; // Ensure the user is logged in
+    if (!user) return;
 
     try {
       const q = query(collection(db, 'wallets'), where('userId', '==', user.uid));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0]; // Assuming one document per user
+        const doc = querySnapshot.docs[0];
         const data = doc.data();
         setWatchlist(data.watchList || []);
-      } else {
-        console.warn('No watchlist found for this user.');
       }
     } catch (error) {
       console.error('Error fetching watchlist:', error);
     }
   };
 
-  // Fetch all coins
   const fetchCoins = async () => {
     setLoading(true);
-    setError(''); // Clear previous errors
+    setError('');
 
     try {
       const { data } = await axios.get(CoinList('usd'));
       setCoins(data);
     } catch (error) {
-      console.error('Error fetching coins:', error);
-      // Use error.response if available, or error.message as a fallback
       setError(
-        error.response?.data?.status?.error_message || 
-        'An error occurred while fetching coins. (Iam using free version of the API, please try again after some time.)'
+        error.response?.data?.status?.error_message ||
+        'An error occurred while fetching coins. (Using free API, please try again later.)'
       );
     } finally {
       setLoading(false);
@@ -86,11 +80,10 @@ const WatchlistTable = () => {
     navigate(`/coins/${coinId}`);
   };
 
-  // Filter coins based on the user's watchlist and search term
   const filteredCoins = useMemo(() => {
     return coins.filter(
       (coin) =>
-        watchlist.includes(coin.id) && // Only show coins in the watchlist
+        watchlist.includes(coin.id) &&
         (coin.name.toLowerCase().includes(search.toLowerCase()) ||
           coin.symbol.toLowerCase().includes(search.toLowerCase()))
     );
@@ -111,7 +104,6 @@ const WatchlistTable = () => {
           height="60px"
         />
 
-        {/* Display error message if there's an error */}
         {error && <ErrorMessage message={error} />}
 
         {loading ? (
@@ -169,11 +161,7 @@ const WatchlistTable = () => {
                         </Td>
                         <Td>${coin.current_price.toLocaleString()}</Td>
                         <Td
-                          color={
-                            coin.price_change_percentage_24h > 0
-                              ? 'green.400'
-                              : 'red.400'
-                          }
+                          color={coin.price_change_percentage_24h > 0 ? 'green.400' : 'red.400'}
                         >
                           {coin.price_change_percentage_24h
                             ? `${coin.price_change_percentage_24h.toFixed(2)}%`
