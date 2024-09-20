@@ -39,8 +39,7 @@ export default function TransferForm() {
     await startPayment({ setError, setTxs, ether, addr });
     if (!error) {
       toast({
-        title: 'Transaction sent!',
-        description: 'Your transaction was successfully sent.',
+        title: 'Transaction Complete',
         status: 'success',
         duration: 5000,
         isClosable: true,
