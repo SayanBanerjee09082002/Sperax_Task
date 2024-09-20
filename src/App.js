@@ -41,7 +41,6 @@ function App() {
                 path="/wallet" 
                 element={
                   <>
-                    <AppBar /> {/* Render AppBar for WalletPage */}
                     <WalletPage />
                   </>
                 } 
