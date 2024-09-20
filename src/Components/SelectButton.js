@@ -4,7 +4,8 @@ const SelectButton = ({ children, selected, onClick }) => {
   return (
     <Button
       onClick={onClick}
-      bg={selected ? "gold" : "transparent"}
+      bgColor="transparent"
+      bgGradient={selected ? "linear(to-b, #f0ff00, #ff9a00)" : "transparent"}
       color={selected ? "black" : "inherit"}
       fontWeight={selected ? "bold" : "medium"}
       border="1px solid"
@@ -13,7 +14,7 @@ const SelectButton = ({ children, selected, onClick }) => {
       px={5}
       py={2}
       _hover={{
-        bg: "gold",
+        bgGradient: "linear(to-b, #f0ff00, #ff9a00)",
         color: "black",
       }}
       whiteSpace="nowrap"

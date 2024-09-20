@@ -128,7 +128,7 @@ const ProfilePage = () => {
                 aria-label="Edit Wallet Address"
                 onClick={() => setEditing(!editing)}
                 color="black"
-                bg="gold"
+                bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
                 _hover={{ bg: "yellow.400" }}
               />
             </Flex>
@@ -146,9 +146,8 @@ const ProfilePage = () => {
             />
             <Button
               onClick={handleWalletUpdate}
-              colorScheme="gold"
               color="black"
-              bg="gold"
+              bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
               _hover={{ bg: "yellow.400" }}
             >
               Update Wallet Address

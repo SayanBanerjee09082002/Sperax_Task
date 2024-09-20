@@ -83,7 +83,7 @@ export default function TransferForm() {
           </FormControl>
           <Button
             type="submit"
-            bg="gold"
+            bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
             color="black"
             _hover={{ bg: "yellow.400" }}
             width="full"

@@ -107,7 +107,7 @@ const WalletPage = () => {
           />
           <Button
             colorScheme="yellow"
-            bg="gold"
+            bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
             color="black"
             size="lg"
             type="submit"
