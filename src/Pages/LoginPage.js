@@ -42,15 +42,15 @@ const LoginPage = () => {
       textAlign="center"
     >
       <VStack spacing={4}>
-        <Heading fontSize={64}>
-          Sperax
+        <Heading fontSize={56}>
+          Crypto Compass
         </Heading>
         <Text fontSize={18}>
           Securely Manage, Trade, and Grow Your Digital Assets — All in One Place
         </Text>
         <Button
           colorScheme="yellow"
-          bg="gold"
+          bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
           color="black"
           size="lg"
           leftIcon={<Image src="./google.png" boxSize="40px" />}

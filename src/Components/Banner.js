@@ -21,7 +21,7 @@ const Banner = () => {
                 fontFamily="Montserrat"
                 fontSize={{ base: "4xl", md: "5xl", lg: "6xl" }}
             >
-                Sperax
+                Crypto Compass
             </Heading>
             <Text
                 fontSize="lg"

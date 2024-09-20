@@ -46,12 +46,17 @@ const AppBar = () => {
             variant="outline"
             colorScheme="teal"
             bg="gray.600"
-            color="gold"
+            bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
+            margin={4}
           />
         )}
 
-        <Heading size="lg" color="gold">
-          Sperax Crypto Portfolio
+        <Heading
+          size="lg"
+          bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
+          bgClip="text"
+        >
+          Crypto Compass
         </Heading>
 
         <Spacer />
@@ -92,6 +97,9 @@ const AppBar = () => {
                 </Link>
                 <Link to="/profile" onClick={onClose}>
                   <Text fontSize="lg">Profile</Text>
+                </Link>
+                <Link to="/allowance" onClick={onClose}>
+                  <Text fontSize="lg">Allowance</Text>
                 </Link>
                 <Link to="/" onClick={onClose}>
                   <Text fontSize="lg">Logout</Text>

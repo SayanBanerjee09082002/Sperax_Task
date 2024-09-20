@@ -140,7 +140,7 @@ const CoinPage = () => {
             marginTop={8}
             colorScheme="gold"
             color="black"
-            bg="gold"
+            bgGradient="linear(to-b, #f0ff00,   #ff9a00)"
             _hover={{ bg: "yellow.400" }}
             size="lg"
             width="300px"

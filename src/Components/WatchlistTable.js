@@ -116,7 +116,7 @@ const WatchlistTable = () => {
               <TableContainer minW="full">
                 <Table variant="simple" size="lg">
                   <Thead>
-                    <Tr bg="gold" borderRadius="md">
+                    <Tr bgGradient="linear(to-b, #f0ff00,   #ff9a00)">
                       <Th fontSize="lg" fontWeight="bold" color="black">
                         Coin
                       </Th>
